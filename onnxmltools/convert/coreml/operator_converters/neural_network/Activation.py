@@ -5,7 +5,7 @@
 # --------------------------------------------------------------------------
 
 from ....common._apply_operation import apply_elu, apply_hard_sigmoid, apply_leaky_relu, apply_prelu, apply_relu, \
-    apply_sigmoid, apply_tanh
+    apply_sigmoid, apply_tanh, apply_mul, apply_add
 from ....common._registration import register_converter
 
 
@@ -43,9 +43,15 @@ def convert_activation(scope, operator, container):
             attrs['alpha'] = params.scaledTanh.alpha
             attrs['beta'] = params.scaledTanh.beta
         elif activation_type == 'linear':
-            op_type = 'Affine'
-            attrs['alpha'] = params.linear.alpha
-            attrs['beta'] = params.linear.beta
+            if container.target_opset >= 9:
+                partial_affine_result_name = scope.get_unique_variable_name('partial_affine_result')
+                apply_mul(scope, [params.linear.alpha] + inputs, partial_affine_result_name, container)
+                apply_add(scope, [params.linear.beta, partial_affine_result_name], outputs, container)
+                return
+            else:
+                op_type = 'Affine'
+                attrs['alpha'] = params.linear.alpha
+                attrs['beta'] = params.linear.beta
         elif activation_type == 'softsign':
             op_type = 'Softsign'
         elif activation_type == 'softplus':
