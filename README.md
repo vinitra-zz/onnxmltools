@@ -156,8 +156,10 @@ Once these file are generated, a corresponding test must
 be added in *tests_backend* to compute the prediction
 with the runtime.
 
-# License
-[MIT License](LICENSE)
+# Acknowledgements
 
-### Acknowledgements
 The initial version of this package was developed by the following engineers and data scientists at Microsoft during winter 2017: Zeeshan Ahmed, Wei-Sheng Chin, Aidan Crook, Xavier Dupre, Costin Eseanu, Tom Finley, Lixin Gong, Scott Inglis, Pei Jiang, Ivan Matantsev, Prabhat Roy, M. Zeeshan Siddiqui, Shouheng Yi, Shauheen Zahirazami, Yiwen Zhu.
+
+## License
+
+[MIT License](LICENSE)
